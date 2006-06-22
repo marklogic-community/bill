@@ -1,0 +1,11 @@
+body { background-color: white; font-family: arial,sans-serif; }
+
+td,div,p,a { font-family: arial,sans-serif; }
+
+.small { font-size: 80% }
+
+.bold { font-weight: bold }
+
+.link { cursor: pointer; cursor: hand }
+
+.white { color: #ffffff; }
