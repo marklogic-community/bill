@@ -368,10 +368,27 @@ define function display-one-result
            (: Is this in a STAGEDIR? :)
          if ( $cts:node/parent::no:STAGEDIR )
          then ( fn:concat("#", 
-                 (: put the name without spaces as the html anchor :)
-               fn:string-join(fn:tokenize(fn:normalize-space(
-                 fn:string-join($cts:node/ancestor::element()/no:TITLE, "")), 
-                                "\s+" ), "")) )
+             xdmp:base64-encode(xdmp:describe(
+               (: Figure out where the STAGEDIR is in the structure.  Also, 
+                  put this in a FLOWR to strip off the parenthesis from the 
+                  describe of the node to ensure 3.0 compatibility. :)
+      if ( $cts:node/parent::no:STAGEDIR/preceding-sibling::no:SPEECH )
+      then (
+      for $x in $cts:node/parent::no:STAGEDIR/preceding-sibling::no:SPEECH[1]
+      return $x 
+            )
+      else if ( $cts:node/parent::no:STAGEDIR/preceding-sibling::no:TITLE )
+      then ( 
+      for $x in $cts:node/parent::no:STAGEDIR/preceding-sibling::no:TITLE[1]
+      return $x 
+           )
+      else if ( $cts:node/parent::no:STAGEDIR/parent::no:SPEECH )
+      then ( 
+      for $x in $cts:node/parent::no:STAGEDIR/parent::no:SPEECH[1]
+      return $x 
+           )
+      else ("CANNOTFIGUREITOUT")
+                 ) ) ) )
          else (
            (: Is this in a PERSONA? :)
          if ( $cts:node/parent::no:PERSONA )
