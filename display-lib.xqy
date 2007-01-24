@@ -40,8 +40,9 @@ as node()*
 
 define function dispatch(
   $x as node())
-as node()*
+as node()
 {
+<node>{
   if (fn:empty($x)) then () else
   typeswitch ($x)
   case text() return txt($x)
@@ -62,12 +63,13 @@ as node()*
   case processing-instruction() return ()
 
   default return passthru($x)
+}</node>
 }
 
 
 define function txt(
   $x as node()?)
-as item()*
+as node()*
 {
   if (fn:empty($x) 
         (:or string-length(normalize-space($x)) = 0:)
@@ -76,7 +78,7 @@ as item()*
   else ( if (fn:starts-with(text {$x}, "
 ") )
          (:  remove the first line break in a text node  :)
-         then (fn:replace(text {$x}, "^[^\n*]\n", "$1" ) )
+         then (text{ fn:replace(text {$x}, "^[^\n*]\n", "$1" ) } )
          else (text {$x}) )
  
 }
@@ -92,7 +94,7 @@ as element()
        <p align="right">by William Shakespeare</p>
     </span>
   else if ($x/parent::no:PERSONAE ) then (
-    let $fname := xdmp:get-request-field("fname", fn:base-uri($x))
+    let $fname := xdmp:get-request-field("fname", fn:string(fn:base-uri($x)))
     return
     <span>
        <ul>
@@ -102,16 +104,20 @@ as element()
                        then ( 'prologue=true' )
                        else ( 'scene=1' ))}">ACT I</a></li>
           <li><a href="{fn:concat('displayScene.xqy?fname=', 
-                       xdmp:get-request-field("fname", fn:base-uri($x)), 
+                       xdmp:get-request-field("fname", 
+                                 fn:string(xdmp:node-uri($x))), 
                        '&#38;act=2&#38;scene=1')}">ACT II</a></li>
           <li><a href="{fn:concat('displayScene.xqy?fname=', 
-                       xdmp:get-request-field("fname", fn:base-uri($x)), 
+                       xdmp:get-request-field("fname", 
+                                 fn:string(xdmp:node-uri($x))), 
                        '&#38;act=3&#38;scene=1')}">ACT III</a></li>
           <li><a href="{fn:concat('displayScene.xqy?fname=', 
-                       xdmp:get-request-field("fname", fn:base-uri($x)), 
+                       xdmp:get-request-field("fname", 
+                                 fn:string(xdmp:node-uri($x))), 
                        '&#38;act=4&#38;scene=1')}">ACT IV</a></li>
           <li><a href="{fn:concat('displayScene.xqy?fname=', 
-                       xdmp:get-request-field("fname", fn:base-uri($x)), 
+                       xdmp:get-request-field("fname", 
+                                 fn:string(xdmp:node-uri($x))), 
                        '&#38;act=5&#38;scene=1')}">ACT V</a></li>
        </ul>
        <h3><a id="PERSONAE" />{ passthru($x) }</h3>

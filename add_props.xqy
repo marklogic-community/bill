@@ -145,3 +145,13 @@ xdmp:document-set-properties("/shakespeare/plays/r_and_j.xml",
 xdmp:document-set-properties("/shakespeare/plays/coriolan.xml", 
         <playtype>TRAGEDY</playtype>);
 
+"added properties for the following:
+",
+for $x in xdmp:directory("/shakespeare/plays/", "1")
+return
+( 
+  fn:concat(xdmp:node-uri($x), " has the property:
+", xdmp:quote(xdmp:document-get-properties(xdmp:node-uri($x), 
+                   xs:QName("playtype") ) ), "
+" )
+);

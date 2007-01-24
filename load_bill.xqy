@@ -22,6 +22,8 @@
 
 declare namespace dir="http://marklogic.com/xdmp/directory"
 
+(: modify $playdir so it points to the directory in which the 
+   Shakespeare XML files are located :)
 let $playdir := "C:\development\shakespeare"
 for $x in xdmp:filesystem-directory($playdir)//dir:pathname/text()
    [ends-with(lower-case(.), ".xml")]

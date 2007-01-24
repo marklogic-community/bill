@@ -206,7 +206,7 @@ then ( for $highlight in $dispatch
                                                           $near, $near-type),
 <span class="cts:highlight" style="color:{$g-highlight-color};
                 font-weight:bold">{$cts:text}</span> ) )
-else ( $dispatch ), 
+else ( $dispatch/node() ), 
 $navtable
 )
  }
