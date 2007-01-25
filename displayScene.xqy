@@ -201,10 +201,10 @@ d:dispatch(fn:doc($fname)/no:PLAY/no:TITLE),
 if ( not($act eq 0) ) 
 then ( d:dispatch(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:TITLE) ) else (),
 if ( $search )
-then ( cts:highlight($highlight, s:get-query-for-display($search, $type,
+then ( cts:highlight($dispatch, s:get-query-for-display($search, $type,
                                                           $near, $near-type),
 <span class="cts:highlight" style="color:{$g-highlight-color};
-                font-weight:bold">{$cts:text}</span>  )
+                font-weight:bold">{$cts:text}</span>  ) )
 else ( $dispatch/node() ), 
 $navtable
 )
