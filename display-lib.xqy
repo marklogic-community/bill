@@ -40,9 +40,8 @@ as node()*
 
 define function dispatch(
   $x as node())
-as node()
+as node()*
 {
-<node>{
   if (fn:empty($x)) then () else
   typeswitch ($x)
   case text() return txt($x)
@@ -63,7 +62,6 @@ as node()
   case processing-instruction() return ()
 
   default return passthru($x)
-}</node>
 }
 
 

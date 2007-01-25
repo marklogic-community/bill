@@ -44,14 +44,14 @@ let $search := normalize-space(xdmp:get-request-field("query"))
 let $type := xdmp:get-request-field("query-type", "and")
 let $near := normalize-space(xdmp:get-request-field("near", ""))
 let $near-type := xdmp:get-request-field("near-type", "and")
-let $dispatch := d:dispatch(doc($fname)/no:PLAY )
+let $dispatch := <node>{d:dispatch(doc($fname)/no:PLAY )}</node>
 return
 if ( $search )
 then ( cts:highlight($dispatch, s:get-query-for-display($search, $type,
                                                             $near, $near-type),
 <span class="cts:highlight" style="color:{$s:g-highlight-color};
                 font-weight:bold">{$cts:text}</span>  ) )
-else ( $dispatch/node() )
+else ( $dispatch )
 
  }
 </body>
