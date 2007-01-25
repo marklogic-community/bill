@@ -47,11 +47,10 @@ let $near-type := xdmp:get-request-field("near-type", "and")
 let $dispatch := d:dispatch(doc($fname)/no:PLAY )
 return
 if ( $search )
-then ( for $highlight in $dispatch
-       return cts:highlight($highlight, s:get-query-for-display($search, $type,
+then ( cts:highlight($highlight, s:get-query-for-display($search, $type,
                                                             $near, $near-type),
 <span class="cts:highlight" style="color:{$s:g-highlight-color};
-                font-weight:bold">{$cts:text}</span> ) )
+                font-weight:bold">{$cts:text}</span>  )
 else ( $dispatch/node() )
 
  }
