@@ -4,7 +4,7 @@
           *                                       *
           *****************************************
 
-This application is designed to run on MarkLogic Server 3.1.
+This application is designed to run on MarkLogic Server 3.1 and later.
 
 To run the application, you must a) have MarkLogic Server installed,
 b) download the XML source, and b) configure MarkLogic server as 
@@ -55,7 +55,9 @@ To set up the MarkLogic Server Configuration:
 8) Download and unzip the Shakespeare XML source from the URL above.
 
 9) Modify the $playdir variable in the load_bill.xqy script to point to the
-   directory in which you have copied the Shakespeare XML files.
+   directory in which you have copied the Shakespeare XML files.  On UNIX
+   systems, make sure the directory and its parent directory is readable by 
+   the daemon user (or the user under which MarkLogic Server runs).
 
 10) Execute the load_bill.xqy script to load the shakespeare XML into
     the database.  For example, run the following in a browser:

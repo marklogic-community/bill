@@ -1,10 +1,11 @@
+xquery version "0.9-ml"
 (:
  : Demo display library to dynamically transform the XML to xhtml
  :
  : Authors:
  :   Danny <danny@marklogic.com>
  :
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -22,14 +23,7 @@
  : affiliated with the Apache Software Foundation.
  :
  :)
-
-
-
 module "http://marklogic.com/bill/display"
-
-declare namespace no=""
-default element namespace = "http://www.w3.org/1999/xhtml"
-
 
 define function passthru(
   $x as node())
@@ -46,18 +40,18 @@ as node()*
   typeswitch ($x)
   case text() return txt($x)
 
-  case element(no:TITLE) return title($x)
-  case element(no:P) return p($x)
-  case element(no:PERSONAE) return unorderedList($x)
-  case element(no:PERSONA) return listItem($x)
-  case element(no:PGROUP) return para($x)
-  case element(no:GRPDESCR) return groupDesc($x)
-  case element(no:SCNDESCR) return pItalic($x)
-  case element(no:PLAYSUBT) return subtitle($x)
-  case element(no:STAGEDIR) return pItalic($x)
-  case element(no:SPEECH) return speech($x)
-  case element(no:SPEAKER) return pBold($x)
-  case element(no:LINE) return p($x)
+  case element(TITLE) return title($x)
+  case element(P) return p($x)
+  case element(PERSONAE) return unorderedList($x)
+  case element(PERSONA) return listItem($x)
+  case element(PGROUP) return para($x)
+  case element(GRPDESCR) return groupDesc($x)
+  case element(SCNDESCR) return pItalic($x)
+  case element(PLAYSUBT) return subtitle($x)
+  case element(STAGEDIR) return pItalic($x)
+  case element(SPEECH) return speech($x)
+  case element(SPEAKER) return pBold($x)
+  case element(LINE) return p($x)
 
   case processing-instruction() return ()
 
@@ -86,19 +80,19 @@ define function title(
   $x as element())
 as element()
 {
-  if ($x/parent::no:PLAY) then
+  if ($x/parent::PLAY) then
     <span>
        <h1>{ passthru($x) }</h1>
        <p align="right">by William Shakespeare</p>
     </span>
-  else if ($x/parent::no:PERSONAE ) then (
+  else if ($x/parent::PERSONAE ) then (
     let $fname := xdmp:get-request-field("fname", fn:string(fn:base-uri($x)))
     return
     <span>
        <ul>
           <li><a href="{fn:concat('displayScene.xqy?fname=', 
                $fname, '&#38;act=1&#38;', 
-               if ( fn:exists(fn:doc($fname)/no:PLAY/no:ACT[1]/no:PROLOGUE ) )
+               if ( fn:exists(fn:doc($fname)/PLAY/ACT[1]/PROLOGUE ) )
                        then ( 'prologue=true' )
                        else ( 'scene=1' ))}">ACT I</a></li>
           <li><a href="{fn:concat('displayScene.xqy?fname=', 
@@ -120,16 +114,16 @@ as element()
        </ul>
        <h3><a id="PERSONAE" />{ passthru($x) }</h3>
     </span> )
-  else if ($x/parent::no:ACT) then
+  else if ($x/parent::ACT) then
     <h2><a id="{fn:string-join(fn:tokenize(fn:normalize-space(
              fn:string-join($x/text(), "")), "\s+" ), "")}"/>{ passthru($x) }</h2>
-  else if ($x/parent::no:SCENE) then
+  else if ($x/parent::SCENE) then
     <h3><a id="{xdmp:base64-encode(xdmp:describe($x))}"/>{ passthru($x) }</h3>
-  else if ($x/parent::no:PROLOGUE) then
+  else if ($x/parent::PROLOGUE) then
     <h3><a id="{xdmp:base64-encode(xdmp:describe($x))
               (: fn:string-join(fn:tokenize(fn:normalize-space(
           fn:string-join($x/text(), "")), "\s+" ), "") :)}"/>{ passthru($x) }</h3>
-  else if ($x/parent::no:EPILOGUE) then
+  else if ($x/parent::EPILOGUE) then
     <h3><a id="{xdmp:base64-encode(xdmp:describe($x))}"/>{ passthru($x) }</h3>
   else
     <h1>{ passthru($x) }</h1>
@@ -139,10 +133,10 @@ define function p(
   $x as element())
 as element()
 {
-  <div>{$x/text(),  for $line at $idx in $x/(ancestor::no:SCENE |
-                                             ancestor::no:PROLOGUE |
-                                             ancestor::no:EPILOGUE)[1]
-                                            //no:LINE
+  <div>{$x/text(),  for $line at $idx in $x/(ancestor::SCENE |
+                                             ancestor::PROLOGUE |
+                                             ancestor::EPILOGUE)[1]
+                                            //LINE
                     where $line is $x
                     return 
                        (:  if ( math:modf($idx div 5)[1] eq 0 ) :)

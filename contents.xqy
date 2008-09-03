@@ -1,7 +1,8 @@
+xquery version "0.9-ml"
 (:
  : contents.xqy  renders the table of contents
  :
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -19,9 +20,6 @@
  : affiliated with the Apache Software Foundation.
  :
  :)
-
-declare namespace no=""
-declare namespace xh="http://www.w3.org/1999/xhtml"
 
 declare xmlspace=preserve
 
@@ -120,7 +118,7 @@ define function title(
 as element()
 {
 
-     <a href={concat("displayScene.xqy?fname=", $x/../no:uri/text(),
+     <a href={concat("displayScene.xqy?fname=", $x/../uri/text(),
               "&drama=true" )}
      target="mainFrame" class="treeUnselected" onclick="clickAnchor(this)">{
        normalize-space(string-join($x/text(), ""))}</a>
@@ -150,10 +148,10 @@ define function acttitle(
   $x as element() )
 as element()
 {
-     <a href={concat("displayScene.xqy?fname=", $x/../../../no:uri/text(), 
-                if ( $x/preceding-sibling::no:number/text() eq "0" )
+     <a href={concat("displayScene.xqy?fname=", $x/../../../uri/text(), 
+                if ( $x/preceding-sibling::number/text() eq "0" )
                 then ( "&preprologue=true")
-                else (fn:concat("&act=", $x/preceding-sibling::no:number/text()
+                else (fn:concat("&act=", $x/preceding-sibling::number/text()
                       ) ) ) }
      target="mainFrame" class="treeUnselected" onclick="clickAnchor(this)">{
        normalize-space(string-join($x/text(), ""))}</a>
@@ -164,7 +162,7 @@ define function acttitlePlay(
   $x as element() )
 as element()
 {
-     <a href={concat("display.xqy?fname=", $x/../../../no:uri/text(), "#",
+     <a href={concat("display.xqy?fname=", $x/../../../uri/text(), "#",
                      fn:string-join(fn:tokenize(fn:normalize-space(
                  fn:string-join($x/text(), "")), "\s+" ), ""))}
      target="mainFrame" class="treeUnselected" onclick="clickAnchor(this)">{
@@ -177,8 +175,8 @@ define function scene(
 as element()
 {
   <div class="treeNode"> <img src="treenodedot.gif" class="treeNoLinkImage" />
-     <a href={concat("display.xqy?fname=", $x/../../../../../no:uri/text(), 
-                     "#", $x/../no:path/text())}
+     <a href={concat("display.xqy?fname=", $x/../../../../../uri/text(), 
+                     "#", $x/../path/text())}
      target="mainFrame" class="treeUnselected" onclick="clickAnchor(this)">{
        normalize-space(string-join($x/text(), ""))}</a>
   </div>
@@ -190,14 +188,14 @@ define function sceneOnly(
 as element()
 {
   <div class="treeNode"> <img src="treenodedot.gif" class="treeNoLinkImage" />
-     <a href={concat("displayScene.xqy?fname=", $x/../../../../../no:uri/text(), 
-                     "&act=", $x/ancestor::no:ACT/no:number/text(), 
-                    if ( $x/ancestor::no:SCENE/no:number/text() eq "0" )
+     <a href={concat("displayScene.xqy?fname=", $x/../../../../../uri/text(), 
+                     "&act=", $x/ancestor::ACT/number/text(), 
+                    if ( $x/ancestor::SCENE/number/text() eq "0" )
                     then ( "&prologue=true" )
-                    else ( if ( $x/ancestor::no:SCENE/no:number/text() eq "99" ) 
+                    else ( if ( $x/ancestor::SCENE/number/text() eq "99" ) 
                            then ( "&epilogue=true" )
                            else ( fn:concat("&scene=", 
-                                  $x/ancestor::no:SCENE/no:number/text() ) 
+                                  $x/ancestor::SCENE/number/text() ) 
                                 ) 
                          ) )}
      target="mainFrame" class="treeUnselected" onclick="clickAnchor(this)">{
@@ -210,8 +208,8 @@ let $tocnode :=
  <COMEDIES>
 {
  for $x in  xdmp:directory("/shakespeare/plays/")
- where $x/property::no:playtype/text() eq "COMEDY"
- order by doc(base-uri($x))/no:PLAY/no:TITLE/text()
+ where $x/property::playtype/text() eq "COMEDY"
+ order by doc(base-uri($x))/PLAY/TITLE/text()
  return
 (
 <PLAY>
@@ -253,8 +251,8 @@ let $tocnode :=
   <TRAGEDIES>
 {
  for $x in  xdmp:directory("/shakespeare/plays/")
- where $x/property::no:playtype/text() eq "TRAGEDY"
- order by doc(base-uri($x))/no:PLAY/no:TITLE/text()
+ where $x/property::playtype/text() eq "TRAGEDY"
+ order by doc(base-uri($x))/PLAY/TITLE/text()
  return
 (
 <PLAY>
@@ -296,8 +294,8 @@ let $tocnode :=
   <HISTORIES>
 {
  for $x in  xdmp:directory("/shakespeare/plays/")
- where $x/property::no:playtype/text() eq "HISTORY"
- order by doc(base-uri($x))/no:PLAY/no:TITLE/text()
+ where $x/property::playtype/text() eq "HISTORY"
+ order by doc(base-uri($x))/PLAY/TITLE/text()
  return
 (
 <PLAY>

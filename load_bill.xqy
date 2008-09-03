@@ -1,7 +1,8 @@
+xquery version "0.9-ml"
 (:
  : load_bill.xqy  loads the Shakespeare XML into MarkLogic Server
  :
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -19,24 +20,34 @@
  : affiliated with the Apache Software Foundation.
  :
 :)
-
 declare namespace dir="http://marklogic.com/xdmp/directory"
 
 (: modify $playdir so it points to the directory in which the 
    Shakespeare XML files are located :)
 let $playdir := "C:\development\shakespeare"
-for $x in xdmp:filesystem-directory($playdir)//dir:pathname/text()
-   [ends-with(lower-case(.), ".xml")]
+
+
+(: clean up path so it works properly on Windows and UNIX systems :)
+let $cleandir1 := fn:replace($playdir, "\\", "/")
+let $cleandir2 := if (fn:ends-with($cleandir1, "/"))
+            then $cleandir1
+            else fn:concat($cleandir1, "/")
+let $dir := fn:substring($cleandir2, 1, fn:string-length($cleandir2) - 1)
+let $forwardslash := 
+   for $filename in xdmp:filesystem-directory($dir)//dir:pathname/text()
+              [ends-with(lower-case(.), ".xml")]
+   return fn:replace($filename, "\\", "/")
+for $x in $forwardslash
 return
 (
 xdmp:document-load($x, 
   <options xmlns="xdmp:document-load">
     <uri>{fn:concat("/shakespeare/plays/", 
-                    fn:substring-after($x, fn:concat($playdir, "\")))}</uri>
+                    fn:substring-after($x, fn:concat($dir, "/")))}</uri>
     <repair>none</repair>
   </options>) ,
 fn:concat("loaded ", $x, " with uri ", fn:concat("/shakespeare/plays/", 
-                    fn:substring-after($x, fn:concat($playdir, "\"))) 
+                    fn:substring-after($x, fn:concat($dir, "/"))) 
          )
 )
 ,

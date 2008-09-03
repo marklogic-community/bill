@@ -1,7 +1,8 @@
+xquery version "0.9-ml"
 (:
  : start.xqy  display the plays by category
  :
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -20,14 +21,11 @@
  :
  :)
 
-declare namespace xh="http://www.w3.org/1999/xhtml"
-declare namespace no=""
 declare namespace apidoc="http://marklogic.com/xdmp/apidoc"
-default element namespace = "http://www.w3.org/1999/xhtml"
 
 xdmp:set-response-content-type("text/html"),
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 	<head></head>
 	<body>
 	<table vspace="20" align="center">
@@ -43,31 +41,31 @@ xdmp:set-response-content-type("text/html"),
                              <th align="center">Histories</th></tr>
       <tr><td valign="top" style="text-indent: -15">{
       for $play in xdmp:directory("/shakespeare/plays/")
-      where $play/property::no:playtype/text() eq "COMEDY"
-      order by $play/no:PLAY/no:TITLE/text()
+      where $play/property::playtype/text() eq "COMEDY"
+      order by $play/PLAY/TITLE/text()
       return
       <li><a href="displayScene.xqy?fname={fn:base-uri($play)}&drama=true">{
-          normalize-space(string-join($play/no:PLAY/no:TITLE/text(), "") )}</a>
+          normalize-space(string-join($play/PLAY/TITLE/text(), "") )}</a>
           </li>
          
       }</td>
       <td valign="top" style="text-indent: -15">{
       for $play in xdmp:directory("/shakespeare/plays/")
-      where $play/property::no:playtype/text() eq "TRAGEDY"
-      order by $play/no:PLAY/no:TITLE/text()
+      where $play/property::playtype/text() eq "TRAGEDY"
+      order by $play/PLAY/TITLE/text()
       return
       <li><a href="displayScene.xqy?fname={fn:base-uri($play)}&drama=true">{
-          normalize-space(string-join($play/no:PLAY/no:TITLE/text(), "") )}</a>
+          normalize-space(string-join($play/PLAY/TITLE/text(), "") )}</a>
           </li>
          
       }</td>
       <td valign="top" style="text-indent: -15">{
       for $play in xdmp:directory("/shakespeare/plays/")
-      where $play/property::no:playtype/text() eq "HISTORY"
-      order by $play/no:PLAY/no:TITLE/text()
+      where $play/property::playtype/text() eq "HISTORY"
+      order by $play/PLAY/TITLE/text()
       return
       <li><a href="displayScene.xqy?fname={fn:base-uri($play)}&drama=true">{
-          normalize-space(string-join($play/no:PLAY/no:TITLE/text(), "") )}</a>
+          normalize-space(string-join($play/PLAY/TITLE/text(), "") )}</a>
           </li>
          
       }</td></tr></table>

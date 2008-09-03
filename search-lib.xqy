@@ -1,3 +1,4 @@
+xquery version "0.9-ml"
 (:
  : Demo search library
  :
@@ -5,7 +6,7 @@
  :   Michael Blakeley <michael.blakeley@marklogic.com>
  :   modifications by danny
  :
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -25,9 +26,6 @@
  :)
 
 module "http://marklogic.com/bill/search"
-
-declare namespace no=""
-declare namespace xh="http://www.w3.org/1999/xhtml"
 
 (: GLOBAL CONSTANTS :)
 define variable $g-chars-per-hit { 256 }
@@ -247,18 +245,18 @@ define function display-one-result
  as item()* {
   debug(("display-one-result:", $result, $ht, $max, xdmp:score($result))),
   let $link := fn:base-uri($result) 
-  let $act := for $act at $actidx in fn:doc($link)//no:ACT
-              where $act is $result/ancestor::no:ACT[1]
+  let $act := for $act at $actidx in fn:doc($link)//ACT
+              where $act is $result/ancestor::ACT[1]
               return ($actidx)
   let $scene := 
         let $isItEmpty :=
-              for $scene at $sceneidx in fn:doc($link)//no:ACT[$act]//no:SCENE
+              for $scene at $sceneidx in fn:doc($link)//ACT[$act]//SCENE
               where $scene is $result
               return xs:string($sceneidx)
          return if ( fn:empty($isItEmpty) )
                 then ( "0" )
                 else  $isItEmpty
-  let $title := fn:doc($link)/no:PLAY/no:TITLE/text()
+  let $title := fn:doc($link)/PLAY/TITLE/text()
   let $describe := xdmp:base64-encode(xdmp:describe($result))
   let $fulllink := fn:concat('display.xqy?fname=', $link, '&query-type=', 
                         xdmp:url-encode(xdmp:get-request-field("query-type",   
@@ -266,7 +264,7 @@ define function display-one-result
                  '&query=', xdmp:url-encode(xdmp:get-request-field("query")),
                  '&near-type=',  xdmp:url-encode($g-near-type),
                  '&near=',  xdmp:url-encode($g-near))
-  let $scenelink := fn:concat( if ( $result/ancestor::no:ACT )
+  let $scenelink := fn:concat( if ( $result/ancestor::ACT )
                     then ( fn:concat('displayScene.xqy?fname=', $link, '&act=', 
                               xs:string($act), '&scene=', $scene ) )
                     else ( fn:concat('displayScene.xqy?fname=', $link, 
@@ -277,10 +275,10 @@ define function display-one-result
                  '&query=', xdmp:url-encode(xdmp:get-request-field("query")),
                  '&near-type=',  xdmp:url-encode($g-near-type),
                  '&near=',  xdmp:url-encode($g-near),
-(: Is this a prologue? :) if ( $result/self::no:PROLOGUE )
+(: Is this a prologue? :) if ( $result/self::PROLOGUE )
                           then ( '&prologue=true' )
                           else (''),
-(: Is this an epilogue? :) if ( $result/self::no:EPILOGUE )
+(: Is this an epilogue? :) if ( $result/self::EPILOGUE )
                           then ( '&epilogue=true' )
                           else ('') ) )
 
@@ -295,21 +293,21 @@ define function display-one-result
            fn:string-join(fn:tokenize(fn:normalize-space(fn:string-join(
               $result/preceding-sibling::TITLE/text(), "") ), "\s+" ), "") )
                       }, 
-       $result/preceding-sibling::no:TITLE/text()
+       $result/preceding-sibling::TITLE/text()
                }, <br/>,
     $g-nbsp, $g-nbsp, $g-nbsp, $g-nbsp, element a {
        attribute href { $scenelink}, 
-       $result/no:TITLE/text()
+       $result/TITLE/text()
                }, (: <br/>,
     $g-nbsp, $g-nbsp, $g-nbsp, $g-nbsp, $g-nbsp, $g-nbsp, element a {
        attribute href { fn:concat($fulllink, "#", 
           xdmp:base64-encode(xdmp:describe(
                (: Put this in a FLOWR to strip off the parenthesis from the 
                   describe of the node :)
-                        for $x in $result/no:TITLE return $x )           
+                        for $x in $result/TITLE return $x )           
                                   ) )
                       }, 
-                  $result/no:TITLE/text()
+                  $result/TITLE/text()
                }, :)<br/>,
     <font size="-1">{
       (: highlight the search terms in the results, then turn
@@ -326,17 +324,17 @@ define function display-one-result
  <span class="cts:highlight" style="color:{$g-highlight-color};
    font-weight:bold"><a href={fn:concat(
 (: is this part of an ACT? :)
-     if ( fn:not($result/ancestor::no:ACT) )
+     if ( fn:not($result/ancestor::ACT) )
      then ( fn:concat('displayScene.xqy?fname=', $link, '&drama=true') )
      else (fn:concat('displayScene.xqy?fname=', $link, '&act=',
-        for $act at $actidx in fn:doc($link)//no:ACT
-        where $act is $cts:node/ancestor::no:ACT[1]
+        for $act at $actidx in fn:doc($link)//ACT
+        where $act is $cts:node/ancestor::ACT[1]
         return xs:string($actidx), '&scene=',
  (: check for empty because we will be casting this to an integer
     and you cannot cast the empty string to an integer :)
         let $isItEmpty :=
-            for $scene at $sceneidx in $cts:node/ancestor::no:ACT[1]//no:SCENE
-            where $scene is $cts:node/ancestor::no:SCENE[1]
+            for $scene at $sceneidx in $cts:node/ancestor::ACT[1]//SCENE
+            where $scene is $cts:node/ancestor::SCENE[1]
             return xs:string($sceneidx)
         return if ( fn:empty($isItEmpty) )
                then ( "0" )
@@ -349,58 +347,58 @@ define function display-one-result
   '&query=', xdmp:url-encode(xdmp:get-request-field("query")),
   '&near-type=',  xdmp:url-encode($g-near-type),
   '&near=',  xdmp:url-encode($g-near),
-(: Is this a prologue? :) if ( $cts:node/ancestor::no:PROLOGUE )
+(: Is this a prologue? :) if ( $cts:node/ancestor::PROLOGUE )
                           then ( '&prologue=true' )
                           else (''),
-(: Is this an epilogue? :) if ( $cts:node/ancestor::no:EPILOGUE )
+(: Is this an epilogue? :) if ( $cts:node/ancestor::EPILOGUE )
                           then ( '&epilogue=true' )
                           else ('')
            ,  
    (: add the anchor id to the end of the href :)
 
            (: Is this in a TITLE? :)
-         if ( $cts:node/parent::no:TITLE )
+         if ( $cts:node/parent::TITLE )
          then ( fn:concat("#", 
                  (: put the name without spaces as the html anchor :)
                fn:string-join(fn:tokenize(fn:normalize-space(
                  fn:string-join($cts:node, "")), "\s+" ), "")) )
          else (
            (: Is this in a STAGEDIR? :)
-         if ( $cts:node/parent::no:STAGEDIR )
+         if ( $cts:node/parent::STAGEDIR )
          then ( fn:concat("#", 
              xdmp:base64-encode(xdmp:describe(
                (: Figure out where the STAGEDIR is in the structure.  Also, 
                   put this in a FLOWR to strip off the parenthesis from the 
                   describe of the node to ensure 3.0 compatibility. :)
-      if ( $cts:node/parent::no:STAGEDIR/preceding-sibling::no:SPEECH )
+      if ( $cts:node/parent::STAGEDIR/preceding-sibling::SPEECH )
       then (
-      for $x in $cts:node/parent::no:STAGEDIR/preceding-sibling::no:SPEECH[1]
+      for $x in $cts:node/parent::STAGEDIR/preceding-sibling::SPEECH[1]
       return $x 
             )
-      else if ( $cts:node/parent::no:STAGEDIR/preceding-sibling::no:TITLE )
+      else if ( $cts:node/parent::STAGEDIR/preceding-sibling::TITLE )
       then ( 
-      for $x in $cts:node/parent::no:STAGEDIR/preceding-sibling::no:TITLE[1]
+      for $x in $cts:node/parent::STAGEDIR/preceding-sibling::TITLE[1]
       return $x 
            )
-      else if ( $cts:node/parent::no:STAGEDIR/parent::no:SPEECH )
+      else if ( $cts:node/parent::STAGEDIR/parent::SPEECH )
       then ( 
-      for $x in $cts:node/parent::no:STAGEDIR/parent::no:SPEECH[1]
+      for $x in $cts:node/parent::STAGEDIR/parent::SPEECH[1]
       return $x 
            )
       else ("CANNOTFIGUREITOUT")
                  ) ) ) )
          else (
            (: Is this in a PERSONA? :)
-         if ( $cts:node/parent::no:PERSONA )
+         if ( $cts:node/parent::PERSONA )
          then ( "#PERSONAE" )
          else (
             (: Is this in a LINE? :)
-         if ( $cts:node/parent::no:LINE )
+         if ( $cts:node/parent::LINE )
          then ( fn:concat("#", 
           xdmp:base64-encode(xdmp:describe(
                (: Put this in a FLOWR to strip off the parenthesis from the 
                   describe of the node :)
-                        for $x in $cts:node/parent::no:LINE/parent::no:SPEECH
+                        for $x in $cts:node/parent::LINE/parent::SPEECH
                         return $x) 
                            ) )
               )
@@ -410,10 +408,10 @@ define function display-one-result
           xdmp:base64-encode(xdmp:describe(
                (: Put this in a FLOWR to strip off the parenthesis from the 
                   describe of the node :)
-                        for $x in $cts:node/(ancestor::no:SCENE | 
-                                        ancestor::no:ACT |
-                                        ancestor::no:PLAY)[fn:last()]/
-                                no:TITLE return $x )  ), "") 
+                        for $x in $cts:node/(ancestor::SCENE | 
+                                        ancestor::ACT |
+                                        ancestor::PLAY)[fn:last()]/
+                                TITLE return $x )  ), "") 
               )
             )  )))}>{$cts:text}</a></span>)
        return

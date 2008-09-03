@@ -1,8 +1,9 @@
+xquery version "0.9-ml"
 (:
  : displayScene.xqy  transforms the Shakespeare XML to display it one 
  :                   scene at a time
  :
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -20,10 +21,6 @@
  : affiliated with the Apache Software Foundation.
  :
  :)
-
-declare namespace xh="http://www.w3.org/1999/xhtml"
-declare namespace no=""
-default element namespace = "http://www.w3.org/1999/xhtml"
 
 import module namespace d="http://marklogic.com/bill/display" 
        at "display-lib.xqy"
@@ -46,18 +43,18 @@ let $scene := if ( $sceneVariable eq "" )
               then ( 0 )
               else xs:integer($sceneVariable) 
 return
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-  <title>{fn:concat(fn:doc($fname)/no:PLAY/no:TITLE/text(), ", ",
+  <title>{fn:concat(fn:doc($fname)/PLAY/TITLE/text(), ", ",
      if ( fn:not($act eq 0) )
      then (
-         fn:doc($fname)/no:PLAY/no:ACT[$act]/no:TITLE/text()
+         fn:doc($fname)/PLAY/ACT[$act]/TITLE/text()
           )
      else (""), ", ",
      if ( fn:not($scene eq 0) )
      then (
-         fn:string-join((fn:tokenize(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene]/
-                  no:TITLE/text(), " ")[1 to 2]), " ")
+         fn:string-join((fn:tokenize(fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene]/
+                  TITLE/text(), " ")[1 to 2]), " ")
           )
     else ( "" )
                    )}</title>
@@ -67,22 +64,22 @@ return
 
 let $dispatch := if ( xdmp:get-request-field("prologue") eq "true" )
                  then ( 
-             d:dispatch( fn:doc($fname)/no:PLAY/no:ACT[$act]/no:PROLOGUE ) )
+             d:dispatch( fn:doc($fname)/PLAY/ACT[$act]/PROLOGUE ) )
                  else ( if ( xdmp:get-request-field("epilogue") eq "true" )
                         then (
-             d:dispatch( fn:doc($fname)/no:PLAY/no:ACT[$act]/no:EPILOGUE ) 
+             d:dispatch( fn:doc($fname)/PLAY/ACT[$act]/EPILOGUE ) 
                              )
                         else ( if ( xdmp:get-request-field("drama") eq "true" )
                                then (
-             d:dispatch( fn:doc($fname)/no:PLAY/no:FM ),
-             d:dispatch( fn:doc($fname)/no:PLAY/no:PERSONAE )
+             d:dispatch( fn:doc($fname)/PLAY/FM ),
+             d:dispatch( fn:doc($fname)/PLAY/PERSONAE )
                                     )
                                else ( if ( 
                           xdmp:get-request-field("preprologue") eq "true")
                                       then (
-             d:dispatch( fn:doc($fname)/no:PLAY/no:PROLOGUE ) )
+             d:dispatch( fn:doc($fname)/PLAY/PROLOGUE ) )
                                       else (
-             d:dispatch( fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene] )))))
+             d:dispatch( fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene] )))))
 let $navtable :=
 (
 <table  width="100%">
@@ -94,8 +91,8 @@ let $navtable :=
    ACT V.
 :)
 if ( $scene = 1 ) 
-then (if ( fn:exists(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene]/
-                       preceding-sibling::no:PROLOGUE) )
+then (if ( fn:exists(fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene]/
+                       preceding-sibling::PROLOGUE) )
                then ( <a href={fn:concat('displayScene.xqy?fname=', $fname,
                       '&act=', xs:string($act), 
                       '&prologue=true')}>previous</a> )
@@ -103,22 +100,22 @@ then (if ( fn:exists(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene]/
        then ( <a href={fn:concat('displayScene.xqy?fname=', $fname,
                       '&act=', xs:string($act - 1), 
                       '&scene=', 
-xs:string( fn:count(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene]/
-                    ancestor::no:ACT/preceding-sibling::no:ACT[1]//no:SCENE) )
+xs:string( fn:count(fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene]/
+                    ancestor::ACT/preceding-sibling::ACT[1]//SCENE) )
                                  ) }>previous</a> ) 
-        else ( if ( fn:exists(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene]/
-                       preceding-sibling::no:PROLOGUE) )
+        else ( if ( fn:exists(fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene]/
+                       preceding-sibling::PROLOGUE) )
                then ( if ( xdmp:get-request-field("prologue") eq "true" and
                            $act > 1 )
                       then ( <a href={fn:concat('displayScene.xqy?fname=', $fname,
                       '&act=', xs:string($act - 1), '&scene=', 
-xs:string( fn:count(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene]/
-                    ancestor::no:ACT/preceding-sibling::no:ACT[1]//no:SCENE) )
+xs:string( fn:count(fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene]/
+                    ancestor::ACT/preceding-sibling::ACT[1]//SCENE) )
                                   ) }>previous</a>  
                             )
                       else ( )
                     )
-               else ( if ( fn:exists(fn:doc($fname)/no:PLAY/no:PROLOGUE ) )
+               else ( if ( fn:exists(fn:doc($fname)/PLAY/PROLOGUE ) )
                       then ( <a href={fn:concat('displayScene.xqy?fname=', 
                       $fname, '&preprologue=true')}>previous</a> )
                       else () )
@@ -133,7 +130,7 @@ else (
           <a href={fn:concat('displayScene.xqy?fname=', $fname,
                       '&act=', xs:string($act - 1), 
                       '&scene=', 
-xs:string( fn:count(fn:doc($fname)/no:PLAY/no:ACT[$act - 1]//no:SCENE) )
+xs:string( fn:count(fn:doc($fname)/PLAY/ACT[$act - 1]//SCENE) )
                                  ) }>previous</a> )
                              else ()
       )
@@ -145,7 +142,7 @@ xs:string( fn:count(fn:doc($fname)/no:PLAY/no:ACT[$act - 1]//no:SCENE) )
 if ( not(xdmp:get-request-field("epilogue") eq "true") and
      not(xdmp:get-request-field("drama") eq "true") and 
      not(xdmp:get-request-field("preprologue") eq "true") and 
-     fn:exists(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene + 1] ) )
+     fn:exists(fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene + 1] ) )
 then ( <a href={fn:concat('displayScene.xqy?fname=', $fname,
                       '&act=', xs:string($act), 
                       '&scene=', xs:string($scene + 1))}>next</a> ) 
@@ -158,14 +155,14 @@ else (
   else (       (: is there an EPILOGUE after this scene? :)
           if ( not(xdmp:get-request-field("epilogue") eq "true") and 
                not($act eq 0) and
-               fn:exists(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:SCENE[$scene]/
-                      following-sibling::no:EPILOGUE ) )
+               fn:exists(fn:doc($fname)/PLAY/ACT[$act]/SCENE[$scene]/
+                      following-sibling::EPILOGUE ) )
           then ( <a href={fn:concat('displayScene.xqy?fname=', $fname,
                       '&act=', xs:string($act), 
                       '&epilogue=true')}>next</a> )
           else ( if ( xdmp:get-request-field("drama") eq "true")
-                 then ( if ( fn:exists(fn:doc($fname)/no:PLAY/no:ACT[$act + 1]/
-                                       no:PROLOGUE ) )
+                 then ( if ( fn:exists(fn:doc($fname)/PLAY/ACT[$act + 1]/
+                                       PROLOGUE ) )
                         then ( <a href={fn:concat('displayScene.xqy?fname=', $fname,
                       '&act=', xs:string($act + 1), '&prologue=true')}>next</a> )
                         else ( <a href={fn:concat('displayScene.xqy?fname=', $fname,
@@ -197,9 +194,9 @@ else ( "&nbsp;")
 }</td></tr>
 </table>)
 return ($navtable,
-d:dispatch(fn:doc($fname)/no:PLAY/no:TITLE),
+d:dispatch(fn:doc($fname)/PLAY/TITLE),
 if ( not($act eq 0) ) 
-then ( d:dispatch(fn:doc($fname)/no:PLAY/no:ACT[$act]/no:TITLE) ) else (),
+then ( d:dispatch(fn:doc($fname)/PLAY/ACT[$act]/TITLE) ) else (),
 if ( $search )
 then ( cts:highlight(<node>{$dispatch}</node>, 
                   s:get-query-for-display($search, $type, $near, $near-type),

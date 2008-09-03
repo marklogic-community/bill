@@ -1,3 +1,4 @@
+xquery version "0.9-ml"
 (:
  : Demo: generic search UI for Semi-structured content
  :
@@ -5,7 +6,7 @@
  :   Michael Blakeley <michael.blakeley@marklogic.com>
  :   mods by danny <danny@marklogic.com>
  :
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.

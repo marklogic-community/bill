@@ -1,5 +1,6 @@
+xquery version "0.9-ml"
 (:
- : Copyright (c)2002-2006 Mark Logic Corporation. All Rights Reserved.
+ : Copyright (c)2002-2008 Mark Logic Corporation. All Rights Reserved.
  :
  : Licensed under the Apache License, Version 2.0 (the "License");
  : you may not use this file except in compliance with the License.
@@ -18,10 +19,6 @@
  :
 :)
 
-declare namespace xh="http://www.w3.org/1999/xhtml"
-declare namespace no=""
-default element namespace = "http://www.w3.org/1999/xhtml"
-
 import module namespace 
        d="http://marklogic.com/bill/display" at "display-lib.xqy"
 import module namespace 
@@ -34,7 +31,7 @@ xdmp:set-response-content-type("text/html"),
 let $fname :=   xdmp:get-request-field("fname",
                                "http://pubs/3.0doc/xml/admin/admin_inter.xml") 
 return
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
   <title>{doc($fname)/PLAY/TITLE/text()}</title>
 </head>
@@ -44,7 +41,7 @@ let $search := normalize-space(xdmp:get-request-field("query"))
 let $type := xdmp:get-request-field("query-type", "and")
 let $near := normalize-space(xdmp:get-request-field("near", ""))
 let $near-type := xdmp:get-request-field("near-type", "and")
-let $dispatch := <node>{d:dispatch(doc($fname)/no:PLAY )}</node>
+let $dispatch := <node>{d:dispatch(doc($fname)/PLAY )}</node>
 return
 if ( $search )
 then ( cts:highlight($dispatch, s:get-query-for-display($search, $type,
