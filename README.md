@@ -1,6 +1,6 @@
 # Shakespeare Demo Application
 
-This application is designed to run on MarkLogic Server 3.1 and later.
+This application is designed to run on MarkLogic Server 7 and later.
 
 To run the application, you must:
 * Have MarkLogic Server installed
@@ -118,7 +118,7 @@ Some of the features and design patterns of the application include:
 
 ### The following files are included in the distribution:
 ```
-* README.txt         this file
+* README.md         this file
 * add_props.xqy      XQuery script to update the XML documents, adding the
                    appropriate property to each document (COMEDY, TRAGEDY, 
                    HISTORY)
