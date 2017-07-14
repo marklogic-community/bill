@@ -2,10 +2,10 @@
 
 This application is designed to run on MarkLogic Server 3.1 and later.
 
-To run the application, you must :
-   a) have MarkLogic Server installed
-   b) download the XML source 
-   b) configure MarkLogic server as described below.
+To run the application, you must:
+* Have MarkLogic Server installed
+* Download the XML source  
+* Configure MarkLogic server as described below.
 
 ## Getting Started
 To download the Shakespeare XML Source for the Plays, download
@@ -13,15 +13,13 @@ the zip file containing the source:
 
    The shakespeare XML source is available via the following URL:
 
-     ```
      http://www.oasis-open.org/cover/bosakShakespeare200.html
-     ```
+     
      
    This points to a zip file at the following location:
    
-     ```
      http://metalab.unc.edu/bosak/xml/eg/shaks200.zip
-     ```
+     
      
   The XML source is subject to the copyright stated in the XML files.
 
@@ -119,24 +117,25 @@ Some of the features and design patterns of the application include:
     * and much more....
 
 ### The following files are included in the distribution:
-
-README.txt         this file
-add_props.xqy      XQuery script to update the XML documents, adding the
+```
+* README.txt         this file
+* add_props.xqy      XQuery script to update the XML documents, adding the
                    appropriate property to each document (COMEDY, TRAGEDY, 
                    HISTORY)
-contents.xqy       XQuery main module to display the table of contents
-default.xqy        redirects to the start point of the application
-display.xqy        XQuery main module to display an entire play on one page
-display-lib.xqy    XQuery library module containing the display functions
-displayScene       XQuery main module to display the plays one scene at a time
-frame.html         html frame layout
-load_bill.xqy      XQuery load script to load the XML source
-search.xqy         XQuery main module to display the search results page
-searchAdv.xqy      XQuery main module to display the proximity search 
+* contents.xqy       XQuery main module to display the table of contents
+* default.xqy        redirects to the start point of the application
+* display.xqy        XQuery main module to display an entire play on one page
+* display-lib.xqy    XQuery library module containing the display functions
+* displayScene       XQuery main module to display the plays one scene at a time
+* frame.html         html frame layout
+* load_bill.xqy      XQuery load script to load the XML source
+* search.xqy         XQuery main module to display the search results page
+* searchAdv.xqy      XQuery main module to display the proximity search 
                    results page
-search-lib.xqy     XQuery library module containing the search functions
-start.xqy          XQuery main module to display the initial page with links
+* search-lib.xqy     XQuery library module containing the search functions
+* start.xqy          XQuery main module to display the initial page with links
                    to all the plays
-tree.js            javascript file to support table of contents tree control
-*.css,*.jpg,*.gif  supporting images and stylesheets
+* tree.js            javascript file to support table of contents tree control
+* *.css,*.jpg,*.gif  supporting images and stylesheets
+```
 
