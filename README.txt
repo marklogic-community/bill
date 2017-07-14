@@ -4,7 +4,7 @@
           *                                       *
           *****************************************
 
-This application is designed to run on MarkLogic Server 3.1 and later.
+This application is designed to run on MarkLogic Server 7 and later.
 
 To run the application, you must a) have MarkLogic Server installed,
 b) download the XML source, and b) configure MarkLogic server as 
@@ -131,6 +131,4 @@ start.xqy          XQuery main module to display the initial page with links
                    to all the plays
 tree.js            javascript file to support table of contents tree control
 *.css,*.jpg,*.gif  supporting images and stylesheets
-
-Questions:  contact danny@marklogic.com
 
