@@ -42,11 +42,11 @@ the zip file containing the source:
    are sample configuration values for the HTTP server (you can use these
    or choose different ones):
 
-   server name:  bill
-   root:         bill
-   port:         8060
-   modules:      filesystem
-   database:     bill
+   **server name:**  bill  
+   **root:**         bill   
+   **port:**         8060   
+   **modules:**      filesystem   
+   **database:**     bill
    
 7) Copy the Shakespeare application files (.xqy, .html, .js, .gif, .jpg) to 
    the App Server root on your host (for example, to the directory
@@ -54,8 +54,8 @@ the zip file containing the source:
 
 8) Download and unzip the Shakespeare XML source from the URL above.
 
-9) Modify the $playdir variable in the load_bill.xqy script to point to the
-   directory in which you have copied the Shakespeare XML files.  On UNIX
+9) Modify the **$playdir** variable in the **load_bill.xqy** script to point to the
+   directory in which you have copied the Shakespeare XML files. NOTE: On UNIX
    systems, make sure the directory and its parent directory is readable by 
    the daemon user (or the user under which MarkLogic Server runs).
 
