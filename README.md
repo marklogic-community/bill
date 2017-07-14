@@ -1,29 +1,29 @@
-          *****************************************
-          *                                       *
-          *     Shakespeare Demo Application      *
-          *                                       *
-          *****************************************
+# Shakespeare Demo Application
 
 This application is designed to run on MarkLogic Server 7 and later.
 
-To run the application, you must a) have MarkLogic Server installed,
-b) download the XML source, and b) configure MarkLogic server as 
-described below.
+To run the application, you must:
+* Have MarkLogic Server installed
+* Download the XML source  
+* Configure MarkLogic server as described below.
 
+## Getting Started
 To download the Shakespeare XML Source for the Plays, download
 the zip file containing the source:
 
    The shakespeare XML source is available via the following URL:
 
      http://www.oasis-open.org/cover/bosakShakespeare200.html
-
+     
+     
    This points to a zip file at the following location:
-
+   
      http://metalab.unc.edu/bosak/xml/eg/shaks200.zip
-
+     
+     
   The XML source is subject to the copyright stated in the XML files.
 
-To set up the MarkLogic Server Configuration:
+## Setting up the MarkLogic Server Configuration:
 
 1) Create a forest (for example, named bill).
 
@@ -42,11 +42,11 @@ To set up the MarkLogic Server Configuration:
    are sample configuration values for the HTTP server (you can use these
    or choose different ones):
 
-   server name:  bill
-   root:         bill
-   port:         8060
-   modules:      filesystem
-   database:     bill
+   **server name:**  bill  
+   **root:**         bill   
+   **port:**         8060   
+   **modules:**      filesystem   
+   **database:**     bill
    
 7) Copy the Shakespeare application files (.xqy, .html, .js, .gif, .jpg) to 
    the App Server root on your host (for example, to the directory
@@ -54,32 +54,38 @@ To set up the MarkLogic Server Configuration:
 
 8) Download and unzip the Shakespeare XML source from the URL above.
 
-9) Modify the $playdir variable in the load_bill.xqy script to point to the
-   directory in which you have copied the Shakespeare XML files.  On UNIX
+9) Modify the **$playdir** variable in the **load_bill.xqy** script to point to the
+   directory in which you have copied the Shakespeare XML files. NOTE: On UNIX
    systems, make sure the directory and its parent directory is readable by 
    the daemon user (or the user under which MarkLogic Server runs).
 
-10) Execute the load_bill.xqy script to load the shakespeare XML into
+10) Execute the load_bill.xqy script to load the Shakespeare XML into
     the database.  For example, run the following in a browser:
 
+    ```
     http://localhost:8060/load_bill.xqy
+    ```
 
     NOTE: Make sure the user who executes this module has the necessary 
-          prvileges to load documents into the database and to execute 
+          privileges to load documents into the database and to execute 
           the privileged functions in the script.  
 
 11) Add the COMEDY, TRAGEDY, and HISTORY properties to the XML documents
     by running the add_props.xqy script.  For example, run the following 
     in a browser:
 
+    ```
     http://localhost:8060/add_props.xqy
+    ```
 
 12) You can now run the Shakespeare sample application by accessing the
     App Server root.  For example:
 
+    ```
     http://localhost:8060/
+    ```
 
-About the Shakespeare demo application:
+### About the Shakespeare demo application:
 
 The Shakespeare demo application allows you to search across all of the 
 Shakespeare plays and display the plays scene-by-scene.  It includes a 
@@ -110,25 +116,26 @@ Some of the features and design patterns of the application include:
     * using properties to store metadata
     * and much more....
 
-The following files are included in the distribution:
-
-README.txt         this file
-add_props.xqy      XQuery script to update the XML documents, adding the
+### The following files are included in the distribution:
+```
+* README.md         this file
+* add_props.xqy      XQuery script to update the XML documents, adding the
                    appropriate property to each document (COMEDY, TRAGEDY, 
                    HISTORY)
-contents.xqy       XQuery main module to display the table of contents
-default.xqy        redirects to the start point of the application
-display.xqy        XQuery main module to display an entire play on one page
-display-lib.xqy    XQuery library module containing the display functions
-displayScene       XQuery main module to display the plays one scene at a time
-frame.html         html frame layout
-load_bill.xqy      XQuery load script to load the XML source
-search.xqy         XQuery main module to display the search results page
-searchAdv.xqy      XQuery main module to display the proximity search 
+* contents.xqy       XQuery main module to display the table of contents
+* default.xqy        redirects to the start point of the application
+* display.xqy        XQuery main module to display an entire play on one page
+* display-lib.xqy    XQuery library module containing the display functions
+* displayScene       XQuery main module to display the plays one scene at a time
+* frame.html         html frame layout
+* load_bill.xqy      XQuery load script to load the XML source
+* search.xqy         XQuery main module to display the search results page
+* searchAdv.xqy      XQuery main module to display the proximity search 
                    results page
-search-lib.xqy     XQuery library module containing the search functions
-start.xqy          XQuery main module to display the initial page with links
+* search-lib.xqy     XQuery library module containing the search functions
+* start.xqy          XQuery main module to display the initial page with links
                    to all the plays
-tree.js            javascript file to support table of contents tree control
-*.css,*.jpg,*.gif  supporting images and stylesheets
+* tree.js            javascript file to support table of contents tree control
+* *.css,*.jpg,*.gif  supporting images and stylesheets
+```
 
