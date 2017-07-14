@@ -59,7 +59,7 @@ the zip file containing the source:
    systems, make sure the directory and its parent directory is readable by 
    the daemon user (or the user under which MarkLogic Server runs).
 
-10) Execute the load_bill.xqy script to load the shakespeare XML into
+10) Execute the load_bill.xqy script to load the Shakespeare XML into
     the database.  For example, run the following in a browser:
 
     ```
@@ -67,7 +67,7 @@ the zip file containing the source:
     ```
 
     NOTE: Make sure the user who executes this module has the necessary 
-          prvileges to load documents into the database and to execute 
+          privileges to load documents into the database and to execute 
           the privileged functions in the script.  
 
 11) Add the COMEDY, TRAGEDY, and HISTORY properties to the XML documents
