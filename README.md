@@ -1,29 +1,31 @@
-          *****************************************
-          *                                       *
-          *     Shakespeare Demo Application      *
-          *                                       *
-          *****************************************
+# Shakespeare Demo Application
 
 This application is designed to run on MarkLogic Server 3.1 and later.
 
-To run the application, you must a) have MarkLogic Server installed,
-b) download the XML source, and b) configure MarkLogic server as 
-described below.
+To run the application, you must :
+   a) have MarkLogic Server installed
+   b) download the XML source 
+   b) configure MarkLogic server as described below.
 
+## Getting Started
 To download the Shakespeare XML Source for the Plays, download
 the zip file containing the source:
 
    The shakespeare XML source is available via the following URL:
 
+     ```
      http://www.oasis-open.org/cover/bosakShakespeare200.html
-
+     ```
+     
    This points to a zip file at the following location:
-
+   
+     ```
      http://metalab.unc.edu/bosak/xml/eg/shaks200.zip
-
+     ```
+     
   The XML source is subject to the copyright stated in the XML files.
 
-To set up the MarkLogic Server Configuration:
+## Setting up the MarkLogic Server Configuration:
 
 1) Create a forest (for example, named bill).
 
@@ -62,7 +64,9 @@ To set up the MarkLogic Server Configuration:
 10) Execute the load_bill.xqy script to load the shakespeare XML into
     the database.  For example, run the following in a browser:
 
+    ```
     http://localhost:8060/load_bill.xqy
+    ```
 
     NOTE: Make sure the user who executes this module has the necessary 
           prvileges to load documents into the database and to execute 
@@ -72,14 +76,18 @@ To set up the MarkLogic Server Configuration:
     by running the add_props.xqy script.  For example, run the following 
     in a browser:
 
+    ```
     http://localhost:8060/add_props.xqy
+    ```
 
 12) You can now run the Shakespeare sample application by accessing the
     App Server root.  For example:
 
+    ```
     http://localhost:8060/
+    ```
 
-About the Shakespeare demo application:
+### About the Shakespeare demo application:
 
 The Shakespeare demo application allows you to search across all of the 
 Shakespeare plays and display the plays scene-by-scene.  It includes a 
@@ -110,7 +118,7 @@ Some of the features and design patterns of the application include:
     * using properties to store metadata
     * and much more....
 
-The following files are included in the distribution:
+### The following files are included in the distribution:
 
 README.txt         this file
 add_props.xqy      XQuery script to update the XML documents, adding the
@@ -131,6 +139,4 @@ start.xqy          XQuery main module to display the initial page with links
                    to all the plays
 tree.js            javascript file to support table of contents tree control
 *.css,*.jpg,*.gif  supporting images and stylesheets
-
-Questions:  contact danny@marklogic.com
 
