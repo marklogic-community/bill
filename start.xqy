@@ -32,7 +32,9 @@ xdmp:set-response-content-type("text/html"),
 	<tr><td><p>&nbsp;</p></td></tr>
 	<tr><td><p>&nbsp;</p></td></tr>
 	<tr><td align="center">
-			<h1>The Plays of William Shakespeare</h1></td></tr>
+			<h1>The Plays of William Shakespeare</h1>
+			<p> The plays of William Shakespeare are installed and configured. </p>
+			</td></tr>
 	<tr><td><p>&nbsp;</p></td></tr>
         </table>
       <table width="90%" align="center" cellpadding="10">
